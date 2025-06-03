@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポモドーロタイマー</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ポモドーロタイマー</h1>
+        <div class="timer-container">
+            <div class="timer" id="timer">25:00</div>
+            <div class="timer-label" id="timer-label">作業時間</div>
+        </div>
+        <div class="controls">
+            <button id="start-btn">スタート</button>
+            <button id="pause-btn">一時停止</button>
+            <button id="reset-btn">リセット</button>
+        </div>
+        <div class="session-info">
+            <div class="session-count">
+                <span>セッション: </span>
+                <span id="session-count">0</span>
+            </div>
+        </div>
+        <div class="settings">
+            <h2>設定</h2>
+            <div class="setting-item">
+                <label for="work-time">作業時間 (分):</label>
+                <input type="number" id="work-time" min="1" max="60" value="25">
+            </div>
+            <div class="setting-item">
+                <label for="short-break">短い休憩 (分):</label>
+                <input type="number" id="short-break" min="1" max="30" value="5">
+            </div>
+            <div class="setting-item">
+                <label for="long-break">長い休憩 (分):</label>
+                <input type="number" id="long-break" min="1" max="60" value="15">
+            </div>
+            <div class="setting-item">
+                <label for="long-break-interval">長い休憩までのセッション数:</label>
+                <input type="number" id="long-break-interval" min="1" max="10" value="4">
+            </div>
+            <button id="apply-settings">設定を適用</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
