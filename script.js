@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-btn');
     const sessionCountEl = document.getElementById('session-count');
     const applySettingsBtn = document.getElementById('apply-settings');
+    const themeSelectEl = document.getElementById('theme-select'); // Theme select element
     
     // Default settings
     let workTime = 25;
@@ -26,14 +27,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const alarmSound = new Audio();
     alarmSound.src = 'https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3';
     
+    // Theme functions
+    function clearThemeClasses() {
+        document.body.classList.remove('theme-dark', 'theme-forest', 'theme-ocean');
+    }
+
+    function applyTheme() {
+        if (!themeSelectEl) return; // Guard clause if element not found
+        const selectedTheme = themeSelectEl.value;
+        clearThemeClasses(); // Remove old theme classes
+
+        if (selectedTheme !== 'default') {
+            document.body.classList.add(`theme-${selectedTheme}`);
+        }
+        localStorage.setItem('pomodoroTheme', selectedTheme);
+    }
+
+    function loadSavedTheme() {
+        if (!themeSelectEl) return; // Guard clause
+        const savedTheme = localStorage.getItem('pomodoroTheme');
+        if (savedTheme) {
+            themeSelectEl.value = savedTheme; // Set dropdown to saved theme
+            clearThemeClasses(); // Clear any default or existing classes
+            if (savedTheme !== 'default') {
+                document.body.classList.add(`theme-${savedTheme}`);
+            }
+        } else {
+            // If no saved theme, ensure dropdown is on default and no theme class is applied
+            themeSelectEl.value = 'default';
+            clearThemeClasses();
+        }
+    }
+
     // Initialize timer display
     updateTimerDisplay();
+    loadSavedTheme(); // Load and apply saved theme
     
     // Event listeners
     startBtn.addEventListener('click', startTimer);
     pauseBtn.addEventListener('click', pauseTimer);
     resetBtn.addEventListener('click', resetTimer);
     applySettingsBtn.addEventListener('click', applySettings);
+    if (themeSelectEl) { // Add event listener for theme changes
+        themeSelectEl.addEventListener('change', applyTheme);
+    }
     
     // Request notification permission
     if ('Notification' in window) {
@@ -90,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMode = 'work';
         timeLeft = workTime * 60;
         timerLabelEl.textContent = '作業時間';
-        document.body.style.backgroundColor = '#f5f5f5';
         updateTimerDisplay();
         
         if (autoStart) {
@@ -104,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMode = 'shortBreak';
         timeLeft = shortBreak * 60;
         timerLabelEl.textContent = '短い休憩';
-        document.body.style.backgroundColor = '#e8f5e9';
         updateTimerDisplay();
         startTimer();
     }
@@ -113,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMode = 'longBreak';
         timeLeft = longBreak * 60;
         timerLabelEl.textContent = '長い休憩';
-        document.body.style.backgroundColor = '#e3f2fd';
         updateTimerDisplay();
         startTimer();
     }
