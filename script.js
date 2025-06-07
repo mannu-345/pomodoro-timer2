@@ -87,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
+                    timerInterval = null; // Reset interval reference
+                    isRunning = false; // Allow next timer to start
                     alarmSound.play();
                     sendNotification();
                     
